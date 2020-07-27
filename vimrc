@@ -86,7 +86,9 @@ colorscheme solarized
 set cursorline
 hi CursorLine cterm=NONE
 
-"" each time a new or existing file is edited, Vim will try to recognize the type of the file and set the 'filetype' option. This will trigger the FileType event, which can be used to set the syntax highlighting, set options, etc."
+"" each time a new or existing file is edited, Vim will try to recognize the type of the file and
+"" set the 'filetype' option. This will trigger the FileType event, which can be used to set the
+"" syntax highlighting, set options, etc."
 filetype on
 "" enable loading the plugin files for specific file types
 filetype plugin on
@@ -155,7 +157,7 @@ let g:ctrlp_custom_ignore = {
 nnoremap <leader>, :CtrlP<CR>
 ""  CtrlP.vim
 
-""  get git branch, used in setatus line
+""  get git branch, used in status line
 function! GitBranch()
   return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
 endfunction
