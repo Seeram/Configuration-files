@@ -5,6 +5,17 @@ case $- in
 esac
 
 ##############
+# HOST SPECIFIC
+##############
+# stuff useless to have everywhere, e.g. specific filepaths
+if [ -f ~/.bashrc_local ]; then
+    . ~/.bashrc_local
+fi
+
+export NUMBER_OF_CORES=6
+export DEFAULT_PERLBREW_PERL_VERSION='perl-5.16.3'
+
+##############
 # ALLIASES
 ##############
 alias less='less -r'
@@ -15,12 +26,8 @@ alias grep='grep --color=always'
 alias sk_keyboard_layout='setxkbmap sk; xmodmap $HOME/.config/caps_esc_swap'
 alias us_keyboard_layout='setxkbmap us; xmodmap $HOME/.config/caps_esc_swap'
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # run in parallel and include all test files in t/, slow tests first
-alias proveall='prove -j5 --state=slow,save -lr t/'
+alias proveall="prove -j $NUMBER_OF_CORES --state=slow,save -lr t/"
 
 ##############
 # VARIABLES
@@ -52,28 +59,15 @@ shopt -s checkwinsize
 ##############
 # PROMPTS
 ##############
-# function parse_git_branch() {
-#    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-# }
-
-function short_path() {
-        local IFS=/ P=${PWD#?} F
-        for F in $P; do echo -n /${F::1}; done
-        [[ $P ]] || echo -n /
-        echo -n ${F:1}
-}
-
-# export PS1="[\t]\e[0;31m\$(parse_git_branch)\e[m \e[1;37m\$(short_path)\e[m \e[0;32m\u\e[m@\e[0;32m\h\e[m \e[1;37m\$\e[m "
-# export PS1="[\t] \e[0;32m\u\e[m@\e[0;32m\h\e[m \e[1;37m\$\e[m "
-export PS1="\u@\h \w> "                                                                                                    
+export PS1="\u@\h \w> "
 
 ###############
 # PERLBREW
 ###############
 source $HOME/perl5/perlbrew/etc/bashrc
-perlbrew use perl-5.28.0
+perlbrew use $DEFAULT_PERLBREW_PERL_VERSION
 
 ##############
-# GCC 
+# GCC
 ##############
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
