@@ -1,0 +1,31 @@
+#!/bin/bash
+
+ticket_number=`git rev-parse --abbrev-ref HEAD|perl -pe 's/.*\/?(BAC-\d+).*/$1/'`
+
+#zistime ticket number z branche
+if [[ ! "$ticket_number" =~ ^BAC- ]]; then
+	ticket_number=''
+fi
+
+option=$1; shift;   #-m
+
+#prvy parameter sa ocakava -m, inak by som ho musel v parametroch hladat
+if [ "$option" != "-m" ]; then
+	echo "invalid parameters"
+	exit 1;
+fi
+
+message=$1; shift;  #sprava
+
+#pokial sprava nezacina prefixom ticketu, doplni sa ticket
+if [[ ! "$message" =~ ^BAC- ]]; then
+	message="$ticket_number $message";
+fi
+
+if [[ ! "$message" =~ ^BAC- ]]; then
+	>&2 echo "warning: message doesn't contains ticket number"
+	echo "Press any key to continue (or CTRL+c to break)"
+	read -n 1 -s -r
+fi
+
+git commit -m "$message" $*
