@@ -25,6 +25,7 @@ alias la='ls -la'
 alias grep='grep --color=always'
 alias sk_keyboard_layout='setxkbmap sk; xmodmap $HOME/.config/caps_esc_swap'
 alias us_keyboard_layout='setxkbmap us; xmodmap $HOME/.config/caps_esc_swap'
+alias git-ncommit='bash ~/.config/git-ncommit'
 
 # run in parallel and include all test files in t/, slow tests first
 alias proveall="prove -j $NUMBER_OF_CORES --state=slow,save -lr t/"
@@ -71,3 +72,11 @@ perlbrew use $DEFAULT_PERLBREW_PERL_VERSION
 # GCC
 ##############
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+. "$HOME/.cargo/env"
+
+#############
+# START UP
+#############
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+    tmux attach -t default || tmux new -s default
+fi
